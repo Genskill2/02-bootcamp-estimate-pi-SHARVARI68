@@ -15,4 +15,4 @@ class TestWallis(unittest.TestCase):
     pi *= 2
     return pi
 
-print(wallis(100000))
+
