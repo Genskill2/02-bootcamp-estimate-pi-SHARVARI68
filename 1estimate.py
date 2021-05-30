@@ -1,40 +1,41 @@
 
-"""
-The correction for the calculation of pi using the Wallis formula.
-"""
-from __future__ import division
+import math
+import unittest
+def wallis(x):
+    n = 2
+    product = 1
+    for i in range(x):
+        term = n**2 /(n**2 - 1)
+        product *= term
+        n += 2
 
-pi = 3.14159265358979312
+    return 2*product
 
-my_pi = 1.
 
-for i in range(1, 100000):
-    my_pi *= 4 * i ** 2 / (4 * i ** 2 - 1.)
 
-my_pi *= 2
 
-print(pi)
-print(my_pi)
-print(abs(pi - my_pi))
 
-###############################################################################
-num = 1
-den = 1
-for i in range(1, 100000):
-    tmp = 4 * i * i
-    num *= tmp
-    den *= tmp - 1
+import random
+import math
+def monte_carlo(x):
+    circle_inside_points = 0
+    square_inside_points = 0
+    for i in range(x):
+        rand_x=random.uniform(-1,1)
+        rand_y=random.uniform(-1,1)
+        distance=math.sqrt(rand_x**2 + rand_y**2)
 
-better_pi = 2 * (num / den)
 
-print(pi)
-print(better_pi)
-print(abs(pi - better_pi))
-print(abs(my_pi - better_pi))
+        if(distance<1):
+            circle_inside_points += 1
 
-###############################################################################
-# Solution in a single line using more adcanved constructs (reduce, lambda,
-# list comprehensions
-print(2 * reduce(lambda x, y: x * y,
-                 [float((4 * (i ** 2))) / ((4 * (i ** 2)) - 1)
-                 for i in range(1, 100000)]))
+        square_inside_points += 1
+
+
+        pi= (4*circle_inside_points)/square_inside_points
+
+    return pi
+
+
+class TestWallis(unittest.TestCase):
+    def test_low_iters(self):
