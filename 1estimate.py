@@ -1,30 +1,40 @@
 
-class TestWallis(unittest.TestCase):
-    def test_low_iters(self):
-        for i in range(0, 5):
-            pi = wallis(i)
-            self.assertTrue(abs(pi - math.pi) > 0.15, msg=f"Estimate with just {i} iterations is {pi} which is too accurate.\n")
-            
-    def test_high_iters(self):
-        for i in range(500, 600):
-            pi = wallis(i)
-            self.assertTrue(abs(pi - math.pi) < 0.01, msg=f"Estimate with even {i} iterations is {pi} which is not accurate enough.\n")
+"""
+The correction for the calculation of pi using the Wallis formula.
+"""
+from __future__ import division
 
+pi = 3.14159265358979312
 
-class TestMC(unittest.TestCase):
-    def test_randomness(self):
-        pi0 = monte_carlo(15000)
-        pi1 = monte_carlo(15000)
-        
-        self.assertNotEqual(pi0, pi1, "Two different estimates for PI are exactly the same. This is almost impossible.")
+my_pi = 1.
 
-        self.assertFalse(abs(pi0 - pi1) > 0.05, "Two different estimates of PI are too different. This should not happen")
+for i in range(1, 100000):
+    my_pi *= 4 * i ** 2 / (4 * i ** 2 - 1.)
 
-    def test_accuracy(self):
-        for i in range(500, 600):
-            pi = monte_carlo(i)
-            self.assertTrue(abs(pi - math.pi) < 0.4, msg=f"Estimate with even {i} iterations is {pi} which is not accurate enough.\n")
-        
-    
-if __name__ == "__main__":
-    unittest.main()
+my_pi *= 2
+
+print(pi)
+print(my_pi)
+print(abs(pi - my_pi))
+
+###############################################################################
+num = 1
+den = 1
+for i in range(1, 100000):
+    tmp = 4 * i * i
+    num *= tmp
+    den *= tmp - 1
+
+better_pi = 2 * (num / den)
+
+print(pi)
+print(better_pi)
+print(abs(pi - better_pi))
+print(abs(my_pi - better_pi))
+
+###############################################################################
+# Solution in a single line using more adcanved constructs (reduce, lambda,
+# list comprehensions
+print(2 * reduce(lambda x, y: x * y,
+                 [float((4 * (i ** 2))) / ((4 * (i ** 2)) - 1)
+                 for i in range(1, 100000)]))
