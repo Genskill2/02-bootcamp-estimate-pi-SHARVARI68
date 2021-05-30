@@ -39,3 +39,12 @@ def monte_carlo(x):
 
 class TestWallis(unittest.TestCase):
     def test_low_iters(self):
+        
+@@ -30,3 +65,8 @@ def test_accuracy(self):
+
+if __name__ == "__main__":
+    unittest.main()
+
+
+
+
